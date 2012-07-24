@@ -366,7 +366,7 @@ class postfix (
       notify  => $postfix::manage_service_autorestart,
       source  => $postfix::source_dir,
       recurse => true,
-      purge   => $postfix::source_dir_purge,
+      purge   => $postfix::bool_source_dir_purge,
       replace => $postfix::manage_file_replace,
       audit   => $postfix::manage_audit,
     }
