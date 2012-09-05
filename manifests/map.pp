@@ -2,6 +2,24 @@
 #
 # Adds a postfix lookup table
 #
+# == Parameters
+#
+# [*source*]
+#   Sets the value of source parameter for the postfix lookup table
+#
+# [*template*]
+#   Sets the value of content parameter for the postfix lookup table
+#   Defaults to 'postfix/map.erb' if $maps is set.
+#   Note: This option is alternative to the source one
+#
+# [*maps*]
+#   Sets the value of content parameter for the postfix lookup table
+#   Note: This option is alternative to the source one
+#
+# [*path*]
+#   Sets the order of the fragment inside /etc/sudoers or /etc/sudoers.d
+#   Default 20
+#
 # == Usage:
 # postfix::map { 'canonical':
 #   source => 'puppet:///modules/example42/postfix/canonical'
