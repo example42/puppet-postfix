@@ -17,8 +17,8 @@
 #   Note: This option is alternative to the source one
 #
 # [*path*]
-#   Sets the order of the fragment inside /etc/sudoers or /etc/sudoers.d
-#   Default 20
+#   Where to create the file.
+#   Defaults to "${postfix::config_dir}/${name}".
 #
 # == Usage:
 # postfix::map { 'canonical':
