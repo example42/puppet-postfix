@@ -60,7 +60,7 @@ class postfix::aliases(
   file {
     "postfix::aliases":
       ensure  => present,
-      path    => $path,
+      path    => $aliases_file,
       mode    => $postfix::config_file_mode,
       owner   => $postfix::config_file_owner,
       group   => $postfix::config_file_group,
@@ -73,9 +73,9 @@ class postfix::aliases(
   }
   exec {
     "postalias":
-      command => "/usr/sbin/postalias ${path}",
+      command => "/usr/sbin/postalias '${aliases_file}'",
       require => Package['postfix'],
-      creates => "${path}.db";
+      creates => "${aliases_file}.db";
   }
 }
 
