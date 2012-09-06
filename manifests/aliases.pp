@@ -16,9 +16,6 @@
 #   Sets the value of content parameter for the postfix alias database
 #   Note: This option is alternative to the source one
 #
-# [*aliases_file*]
-#   Where to create the file.
-#
 # == Usage:
 # class { 'postfix::aliases':
 #   source => 'puppet:///modules/example42/postfix/aliases'
@@ -40,7 +37,6 @@ class postfix::aliases(
   $source       = params_lookup( 'source' ),
   $template     = params_lookup( 'template' ),
   $maps         = params_lookup( 'maps' ),
-  $aliases_file = params_lookup( 'aliases_file' ),
 ) {
   include postfix
 
@@ -60,7 +56,7 @@ class postfix::aliases(
   file {
     "postfix::aliases":
       ensure  => present,
-      path    => $aliases_file,
+      path    => $postfix::aliases_file,
       mode    => $postfix::config_file_mode,
       owner   => $postfix::config_file_owner,
       group   => $postfix::config_file_group,
@@ -73,9 +69,9 @@ class postfix::aliases(
   }
   exec {
     "postalias":
-      command => "/usr/sbin/postalias '${aliases_file}'",
+      command => "/usr/sbin/postalias '${postfix::aliases_file}'",
       require => Package['postfix'],
-      creates => "${aliases_file}.db";
+      creates => "${postfix::aliases_file}.db";
   }
 }
 

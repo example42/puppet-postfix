@@ -180,6 +180,9 @@
 # [*log_file*]
 #   Log file(s). Used by puppi
 #
+# [*aliases_file*]
+#   Where to create the aliases file (see postfix::aliases).
+#
 # [*port*]
 #   The listening port, if any, of the service.
 #   This is used by monitor, firewall and puppi (optional) components
@@ -243,6 +246,7 @@ class postfix (
   $data_dir            = params_lookup( 'data_dir' ),
   $log_dir             = params_lookup( 'log_dir' ),
   $log_file            = params_lookup( 'log_file' ),
+  $aliases_file        = params_lookup( 'aliases_file' , 'global' ),
   $port                = params_lookup( 'port' ),
   $protocol            = params_lookup( 'protocol' )
   ) inherits postfix::params {
