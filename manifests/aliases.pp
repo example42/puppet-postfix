@@ -16,9 +16,8 @@
 #   Sets the value of content parameter for the postfix alias database
 #   Note: This option is alternative to the source one
 #
-# [*path*]
+# [*aliases_file*]
 #   Where to create the file.
-#   Defaults to "${postfix::config_dir}/${name}".
 #
 # == Usage:
 # class { 'postfix::aliases':
@@ -38,10 +37,10 @@
 # }
 #
 class postfix::aliases(
-  $source   = params_lookup( 'source' ),
-  $template = params_lookup( 'template' ),
-  $maps     = params_lookup( 'maps' ),
-  $path     = "${postfix::config_dir}/${name}",
+  $source       = params_lookup( 'source' ),
+  $template     = params_lookup( 'template' ),
+  $maps         = params_lookup( 'maps' ),
+  $aliases_file = params_lookup( 'aliases_file' ),
 ) {
   include postfix
 
