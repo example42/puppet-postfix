@@ -82,6 +82,10 @@ class postfix::params {
     default                   => '/var/log/postfix/postfix.log',
   }
 
+  $aliases_file = $::operatingsystem ? {
+    default                   => '/etc/aliases',
+  }
+
   $port = '25'
   $protocol = 'tcp'
 
