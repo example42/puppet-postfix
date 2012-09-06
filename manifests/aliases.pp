@@ -9,7 +9,7 @@
 #
 # [*template*]
 #   Sets the value of content parameter for the postfix alias database
-#   Defaults to 'postfix/map.erb' if $maps is set.
+#   Defaults to 'postfix/aliases.erb' if $maps is set.
 #   Note: This option is alternative to the source one
 #
 # [*maps*]
@@ -48,7 +48,7 @@ class postfix::aliases(
   $manage_file_content = $template ? {
     ''        => $maps ? {
       ''      => undef,
-      default => template('postfix/map.erb'),
+      default => template('postfix/aliases.erb'),
       },
     default   => template($template),
   }
