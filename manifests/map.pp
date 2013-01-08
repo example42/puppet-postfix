@@ -20,6 +20,10 @@
 #   Where to create the file.
 #   Defaults to "${postfix::config_dir}/${name}".
 #
+# [*mode*]
+#   The file permissions of the file.
+#   Defaults to $postfix::config_file_mode
+#
 # == Usage:
 # postfix::map { 'canonical':
 #   source => 'puppet:///modules/example42/postfix/canonical'
@@ -41,6 +45,7 @@ define postfix::map(
   $template = params_lookup( 'template' ),
   $maps     = params_lookup( 'maps' ),
   $path     = "${postfix::config_dir}/${name}",
+  $mode     = $postfix::config_file_mode,
 ) {
   include postfix
 
@@ -61,7 +66,7 @@ define postfix::map(
     "postfix::map_${name}":
       ensure  => present,
       path    => $path,
-      mode    => $postfix::config_file_mode,
+      mode    => $mode,
       owner   => $postfix::config_file_owner,
       group   => $postfix::config_file_group,
       require => Package['postfix'],
