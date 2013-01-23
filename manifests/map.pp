@@ -14,6 +14,7 @@
 #
 # [*maps*]
 #   Sets the value of content parameter for the postfix lookup table
+#   Possible values are hashes, arrays, or arrays of arrays (see Usage).
 #   Note: This option is alternative to the source one
 #
 # [*path*]
@@ -38,6 +39,15 @@
 #     'user1@virtual-alias.example.org' => 'address1',
 #     'user2@virtual-alias.example.org' => ['address2', 'address3'],
 #   }
+# }
+#
+# Use arrays when order is important
+#
+# postfix::map { 'access':
+#   maps => [
+#     ['user1@example.org', 'OK'],
+#     ['example.org', 'REJECT',
+#   ]
 # }
 #
 define postfix::map(
