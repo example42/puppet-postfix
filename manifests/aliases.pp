@@ -61,7 +61,6 @@ class postfix::aliases(
       owner   => $postfix::config_file_owner,
       group   => $postfix::config_file_group,
       require => Package['postfix'],
-      notify  => Exec["postalias"],
       source  => $manage_file_source,
       content => $manage_file_content,
       replace => $postfix::manage_file_replace,
@@ -71,7 +70,8 @@ class postfix::aliases(
     "postalias":
       command => "/usr/sbin/postalias '${postfix::aliases_file}'",
       require => Package['postfix'],
-      creates => "${postfix::aliases_file}.db";
+      subscribe => File['postfix::aliases'],
+      refreshonly => true;
   }
 }
 

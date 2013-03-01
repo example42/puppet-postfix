@@ -80,7 +80,6 @@ define postfix::map(
       owner   => $postfix::config_file_owner,
       group   => $postfix::config_file_group,
       require => Package['postfix'],
-      notify  => Exec["postmap-${name}"],
       source  => $manage_file_source,
       content => $manage_file_content,
       replace => $postfix::manage_file_replace,
@@ -90,7 +89,8 @@ define postfix::map(
     "postmap-${name}":
       command => "/usr/sbin/postmap ${path}",
       require => Package['postfix'],
-      creates => "${path}.db";
+      subscribe => File["postmap-${name}"],
+      refreshonly => true;
   }
 }
 
