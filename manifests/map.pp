@@ -89,7 +89,7 @@ define postfix::map(
     "postmap-${name}":
       command => "/usr/sbin/postmap ${path}",
       require => Package['postfix'],
-      subscribe => File["postmap-${name}"],
+      subscribe => File["postfix::map_${name}"],
       refreshonly => true;
   }
 }
