@@ -45,6 +45,11 @@
 #   configuration files. Default: true, Set to false if you don't want to
 #   automatically restart the service.
 #
+# [*restart_command*]
+#   Command to be used to restart the postfix service when there is a
+#   change in configuration files and service_autorestart is set to 'true'.
+#   If left unspecified, the service will be stopped and then started.
+#
 # [*version*]
 #   The package version, used in the ensure parameter of package type.
 #   Default: present. Can be 'latest' or a specific version number.
@@ -214,6 +219,7 @@ class postfix (
   $source_dir_purge    = params_lookup( 'source_dir_purge' ),
   $template            = params_lookup( 'template' ),
   $service_autorestart = params_lookup( 'service_autorestart' , 'global' ),
+  $restart_command     = params_lookup( 'restart_command' ),
   $options             = params_lookup( 'options' ),
   $version             = params_lookup( 'version' ),
   $absent              = params_lookup( 'absent' ),
@@ -292,6 +298,11 @@ class postfix (
     false   => undef,
   }
 
+  $manage_restart_command = $postfix::restart_command ? {
+    ''      => undef,
+    default => $postfix::restart_command,
+  }
+
   $manage_file = $postfix::bool_absent ? {
     true    => 'absent',
     default => 'present',
@@ -345,6 +356,7 @@ class postfix (
     hasstatus  => $postfix::service_status,
     pattern    => $postfix::process,
     require    => Package['postfix'],
+    restart    => $postfix::manage_restart_command,
   }
 
   file { 'postfix.conf':

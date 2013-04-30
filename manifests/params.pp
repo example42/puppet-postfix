@@ -97,6 +97,7 @@ class postfix::params {
   $template = ''
   $options = ''
   $service_autorestart = true
+  $restart_command = ''
   $version = 'present'
   $absent = false
   $disable = false
