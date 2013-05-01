@@ -45,6 +45,11 @@
 #   configuration files. Default: true, Set to false if you don't want to
 #   automatically restart the service.
 #
+# [*restart_command*]
+#   Command to be used to restart the postfix service when there is a
+#   change in configuration files and service_autorestart is set to 'true'.
+#   If left unspecified, the service will be stopped and then started.
+#
 # [*version*]
 #   The package version, used in the ensure parameter of package type.
 #   Default: present. Can be 'latest' or a specific version number.
@@ -183,6 +188,9 @@
 # [*aliases_file*]
 #   Where to create the aliases file (see postfix::aliases).
 #
+# [*mastercf_file*]
+#   master.cf configuration file path (see postfix::mastercf).
+#
 # [*port*]
 #   The listening port, if any, of the service.
 #   This is used by monitor, firewall and puppi (optional) components
@@ -214,6 +222,7 @@ class postfix (
   $source_dir_purge    = params_lookup( 'source_dir_purge' ),
   $template            = params_lookup( 'template' ),
   $service_autorestart = params_lookup( 'service_autorestart' , 'global' ),
+  $restart_command     = params_lookup( 'restart_command' ),
   $options             = params_lookup( 'options' ),
   $version             = params_lookup( 'version' ),
   $absent              = params_lookup( 'absent' ),
@@ -247,6 +256,7 @@ class postfix (
   $log_dir             = params_lookup( 'log_dir' ),
   $log_file            = params_lookup( 'log_file' ),
   $aliases_file        = params_lookup( 'aliases_file' , 'global' ),
+  $mastercf_file       = params_lookup( 'mastercf_file' ),
   $port                = params_lookup( 'port' ),
   $protocol            = params_lookup( 'protocol' )
   ) inherits postfix::params {
@@ -290,6 +300,11 @@ class postfix (
   $manage_service_autorestart = $postfix::bool_service_autorestart ? {
     true    => Service[postfix],
     false   => undef,
+  }
+
+  $manage_restart_command = $postfix::restart_command ? {
+    ''      => undef,
+    default => $postfix::restart_command,
   }
 
   $manage_file = $postfix::bool_absent ? {
@@ -345,6 +360,7 @@ class postfix (
     hasstatus  => $postfix::service_status,
     pattern    => $postfix::process,
     require    => Package['postfix'],
+    restart    => $postfix::manage_restart_command,
   }
 
   file { 'postfix.conf':

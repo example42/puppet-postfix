@@ -83,7 +83,11 @@ class postfix::params {
   }
 
   $aliases_file = $::operatingsystem ? {
-    default                   => '/etc/aliases',
+    default => '/etc/aliases',
+  }
+
+  $mastercf_file = $::operatingsystem ? {
+    default => '/etc/postfix/master.cf',
   }
 
   $port = '25'
@@ -97,6 +101,7 @@ class postfix::params {
   $template = ''
   $options = ''
   $service_autorestart = true
+  $restart_command = ''
   $version = 'present'
   $absent = false
   $disable = false

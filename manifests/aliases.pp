@@ -33,10 +33,10 @@
 #   }
 # }
 #
-class postfix::aliases(
-  $source       = params_lookup( 'source' ),
-  $template     = params_lookup( 'template' ),
-  $maps         = params_lookup( 'maps' ),
+class postfix::aliases (
+  $source   = params_lookup( 'source' ),
+  $template = params_lookup( 'template' ),
+  $maps     = params_lookup( 'maps' ),
 ) {
   include postfix
 
@@ -53,25 +53,24 @@ class postfix::aliases(
     default   => template($template),
   }
 
-  file {
-    "postfix::aliases":
-      ensure  => present,
-      path    => $postfix::aliases_file,
-      mode    => $postfix::config_file_mode,
-      owner   => $postfix::config_file_owner,
-      group   => $postfix::config_file_group,
-      require => Package['postfix'],
-      source  => $manage_file_source,
-      content => $manage_file_content,
-      replace => $postfix::manage_file_replace,
-      audit   => $postfix::manage_audit,
+  file { 'postfix::aliases':
+    ensure  => present,
+    path    => $postfix::aliases_file,
+    mode    => $postfix::config_file_mode,
+    owner   => $postfix::config_file_owner,
+    group   => $postfix::config_file_group,
+    require => Package['postfix'],
+    source  => $manage_file_source,
+    content => $manage_file_content,
+    replace => $postfix::manage_file_replace,
+    audit   => $postfix::manage_audit,
   }
-  exec {
-    "postalias":
-      command => "/usr/sbin/postalias '${postfix::aliases_file}'",
-      require => Package['postfix'],
-      subscribe => File['postfix::aliases'],
-      refreshonly => true;
-  }
-}
 
+  exec { 'postalias':
+    command     => "/usr/sbin/postalias '${postfix::aliases_file}'",
+    require     => Package['postfix'],
+    subscribe   => File['postfix::aliases'],
+    refreshonly => true,
+  }
+
+}
