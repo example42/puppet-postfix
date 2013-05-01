@@ -188,6 +188,9 @@
 # [*aliases_file*]
 #   Where to create the aliases file (see postfix::aliases).
 #
+# [*mastercf_file*]
+#   master.cf configuration file path (see postfix::mastercf).
+#
 # [*port*]
 #   The listening port, if any, of the service.
 #   This is used by monitor, firewall and puppi (optional) components
@@ -253,6 +256,7 @@ class postfix (
   $log_dir             = params_lookup( 'log_dir' ),
   $log_file            = params_lookup( 'log_file' ),
   $aliases_file        = params_lookup( 'aliases_file' , 'global' ),
+  $mastercf_file       = params_lookup( 'mastercf_file' ),
   $port                = params_lookup( 'port' ),
   $protocol            = params_lookup( 'protocol' )
   ) inherits postfix::params {
