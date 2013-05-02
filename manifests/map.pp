@@ -46,11 +46,11 @@
 # postfix::map { 'access':
 #   maps => [
 #     ['user1@example.org', 'OK'],
-#     ['example.org', 'REJECT',
+#     ['example.org', 'REJECT'],
 #   ]
 # }
 #
-define postfix::map(
+define postfix::map (
   $source   = params_lookup( 'source' ),
   $template = params_lookup( 'template' ),
   $maps     = params_lookup( 'maps' ),
@@ -72,25 +72,24 @@ define postfix::map(
     default   => template($template),
   }
 
-  file {
-    "postfix::map_${name}":
-      ensure  => present,
-      path    => $path,
-      mode    => $mode,
-      owner   => $postfix::config_file_owner,
-      group   => $postfix::config_file_group,
-      require => Package['postfix'],
-      source  => $manage_file_source,
-      content => $manage_file_content,
-      replace => $postfix::manage_file_replace,
-      audit   => $postfix::manage_audit,
+  file { "postfix::map_${name}":
+    ensure  => present,
+    path    => $path,
+    mode    => $mode,
+    owner   => $postfix::config_file_owner,
+    group   => $postfix::config_file_group,
+    require => Package['postfix'],
+    source  => $manage_file_source,
+    content => $manage_file_content,
+    replace => $postfix::manage_file_replace,
+    audit   => $postfix::manage_audit,
   }
-  exec {
-    "postmap-${name}":
-      command => "/usr/sbin/postmap ${path}",
-      require => Package['postfix'],
-      subscribe => File["postfix::map_${name}"],
-      refreshonly => true;
-  }
-}
 
+  exec { "postmap-${name}":
+    command     => "/usr/sbin/postmap ${path}",
+    require     => Package['postfix'],
+    subscribe   => File["postfix::map_${name}"],
+    refreshonly => true,
+  }
+
+}
