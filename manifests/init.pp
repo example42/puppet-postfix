@@ -314,6 +314,7 @@ class postfix (
 
   if $postfix::bool_absent == true
   or $postfix::bool_disable == true
+  or $postfix::bool_monitor == false
   or $postfix::bool_disableboot == true {
     $manage_monitor = false
   } else {
@@ -411,7 +412,7 @@ class postfix (
 
 
   ### Service monitoring, if enabled ( monitor => true )
-  if $postfix::bool_monitor == true {
+  if $postfix::monitor_tool {
     monitor::port { "postfix_${postfix::protocol}_${postfix::port}":
       protocol => $postfix::protocol,
       port     => $postfix::port,
