@@ -19,7 +19,7 @@ describe 'postfix' do
   end
 
   describe 'Test standard installation with monitoring and firewalling' do
-    let(:params) { {:monitor => true , :firewall => true, :port => '42', :protocol => 'tcp' } }
+    let(:params) { {:monitor => true , :monitor_tool => 'puppi' , :firewall => true, :port => '42', :protocol => 'tcp' } }
 
     it { should contain_package('postfix').with_ensure('present') }
     it { should contain_service('postfix').with_ensure('running') }
@@ -36,7 +36,7 @@ describe 'postfix' do
   end
 
   describe 'Test decommissioning - absent' do
-    let(:params) { {:absent => true, :monitor => true , :firewall => true, :port => '42', :protocol => 'tcp'} }
+    let(:params) { {:absent => true, :monitor => true , :monitor_tool => 'puppi' , :firewall => true, :port => '42', :protocol => 'tcp'} }
 
     it 'should remove Package[postfix]' do should contain_package('postfix').with_ensure('absent') end 
     it 'should stop Service[postfix]' do should contain_service('postfix').with_ensure('stopped') end
@@ -53,7 +53,7 @@ describe 'postfix' do
   end
 
   describe 'Test decommissioning - disable' do
-    let(:params) { {:disable => true, :monitor => true , :firewall => true, :port => '42', :protocol => 'tcp'} }
+    let(:params) { {:disable => true, :monitor => true , :monitor_tool => 'puppi' , :firewall => true, :port => '42', :protocol => 'tcp'} }
 
     it { should contain_package('postfix').with_ensure('present') }
     it 'should stop Service[postfix]' do should contain_service('postfix').with_ensure('stopped') end
@@ -70,7 +70,7 @@ describe 'postfix' do
   end
 
   describe 'Test decommissioning - disableboot' do
-    let(:params) { {:disableboot => true, :monitor => true , :firewall => true, :port => '42', :protocol => 'tcp'} }
+    let(:params) { {:disableboot => true, :monitor => true , :monitor_tool => 'puppi' , :firewall => true, :port => '42', :protocol => 'tcp'} }
   
     it { should contain_package('postfix').with_ensure('present') }
     it { should_not contain_service('postfix').with_ensure('present') }
@@ -185,7 +185,7 @@ describe 'postfix' do
 
   describe 'Test params lookup' do
     let(:facts) { { :monitor => true , :ipaddress => '10.42.42.42' } }
-    let(:params) { { :port => '42' } }
+    let(:params) { { :port => '42' , :monitor_tool => 'puppi' } }
 
     it 'should honour top scope global vars' do
       content = catalogue.resource('monitor::process', 'postfix_process').send(:parameters)[:enable]
@@ -195,7 +195,7 @@ describe 'postfix' do
 
   describe 'Test params lookup' do
     let(:facts) { { :postfix_monitor => true , :ipaddress => '10.42.42.42' } }
-    let(:params) { { :port => '42' } }
+    let(:params) { { :port => '42' , :monitor_tool => 'puppi'  } }
 
     it 'should honour module specific vars' do
       content = catalogue.resource('monitor::process', 'postfix_process').send(:parameters)[:enable]
@@ -205,7 +205,7 @@ describe 'postfix' do
 
   describe 'Test params lookup' do
     let(:facts) { { :monitor => false , :postfix_monitor => true , :ipaddress => '10.42.42.42' } }
-    let(:params) { { :port => '42' } }
+    let(:params) { { :port => '42' , :monitor_tool => 'puppi' } }
 
     it 'should honour top scope module specific over global vars' do
       content = catalogue.resource('monitor::process', 'postfix_process').send(:parameters)[:enable]
@@ -215,7 +215,7 @@ describe 'postfix' do
 
   describe 'Test params lookup' do
     let(:facts) { { :monitor => false , :ipaddress => '10.42.42.42' } }
-    let(:params) { { :monitor => true , :firewall => true, :port => '42' } }
+    let(:params) { { :monitor => true , :monitor_tool => 'puppi' , :firewall => true, :port => '42' } }
 
     it 'should honour passed params over global vars' do
       content = catalogue.resource('monitor::process', 'postfix_process').send(:parameters)[:enable]
