@@ -5,6 +5,9 @@
 #
 # == Parameters
 #
+# [*ensure*]
+#   Ensure parameter for the file resource. Defaults to 'present'
+#
 # [*source*]
 #   Sets the value of the source parameter for the file
 #
@@ -46,6 +49,7 @@
 # }
 #
 define postfix::conffile (
+  $ensure   = 'present',
   $source   = params_lookup('source'),
   $template = params_lookup('template'),
   $content  = params_lookup('content'),
@@ -68,7 +72,7 @@ define postfix::conffile (
   }
 
   file { "postfix::conffile_${name}":
-    ensure  => present,
+    ensure  => $ensure,
     path    => $path,
     mode    => $mode,
     owner   => $postfix::config_file_owner,
