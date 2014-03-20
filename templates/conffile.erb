@@ -4,10 +4,10 @@
 # ¡¡NO EDITAR MANUALMENTE!!
 #
 
-<%- if options.is_a?(Hash) -%>
-  <%- options.keys.sort.each do | key | -%>
-<%= key %> = <%= options[key] %>
+<%- if @options.is_a?(Hash) -%>
+  <%- @options.keys.sort.each do | key | -%>
+<%= key %> = <%= @options[key] %>
   <%- end -%>
 <%- else -%>
-<%= options.respond_to?('join') ? options.join("\n") : options %>
+<%= @options.respond_to?('join') ? @options.join("\n") : @options %>
 <%- end -%>
