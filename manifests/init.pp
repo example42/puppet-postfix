@@ -272,6 +272,12 @@ class postfix (
   $bool_debug=any2bool($debug)
   $bool_audit_only=any2bool($audit_only)
 
+  ### Include custom class if $my_class is set
+  if $postfix::my_class {
+    include $postfix::my_class
+  }
+
+
   ### Definition of some variables used in the module
   $manage_package = $postfix::bool_absent ? {
     true  => 'absent',
@@ -391,12 +397,6 @@ class postfix (
       replace => $postfix::manage_file_replace,
       audit   => $postfix::manage_audit,
     }
-  }
-
-
-  ### Include custom class if $my_class is set
-  if $postfix::my_class {
-    include $postfix::my_class
   }
 
 
