@@ -385,7 +385,7 @@ class postfix (
   }
 
   # The whole postfix configuration directory can be recursively overriden
-  if $postfix::source_dir {
+  if $postfix::source_dir and $postfix::source_dir != '' {
     file { 'postfix.dir':
       ensure  => directory,
       path    => $postfix::config_dir,
