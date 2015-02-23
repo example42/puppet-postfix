@@ -1,6 +1,8 @@
+# Define postfix::postconf
+#
 define postfix::postconf (
-  $key = '',
   $value,
+  $key    = '',
 ) {
 
   $real_key = $key?{
@@ -12,7 +14,7 @@ define postfix::postconf (
 
   exec{"postconf_${real_key}":
     command => "postconf -e '${key_value}'",
-    unless  => "test \"\$(postconf ${real_key})\" = '$key_value'",
+    unless  => "test \"\$(postconf ${real_key})\" = '${key_value}'",
     path    => $::path
   }
 }

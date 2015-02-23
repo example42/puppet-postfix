@@ -361,13 +361,13 @@ class postfix (
   }
 
   service { 'postfix':
-    ensure     => $postfix::manage_service_ensure,
-    name       => $postfix::service,
-    enable     => $postfix::manage_service_enable,
-    hasstatus  => $postfix::service_status,
-    pattern    => $postfix::process,
-    require    => Package['postfix'],
-    restart    => $postfix::manage_restart_command,
+    ensure    => $postfix::manage_service_ensure,
+    name      => $postfix::service,
+    enable    => $postfix::manage_service_enable,
+    hasstatus => $postfix::service_status,
+    pattern   => $postfix::process,
+    require   => Package['postfix'],
+    restart   => $postfix::manage_restart_command,
   }
 
   file { 'postfix.conf':
