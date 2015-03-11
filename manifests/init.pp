@@ -412,7 +412,7 @@ class postfix (
 
 
   ### Service monitoring, if enabled ( monitor => true )
-  if $postfix::monitor_tool {
+  if $postfix::monitor_tool and $postfix::monitor_tool != '' {
     monitor::port { "postfix_${postfix::protocol}_${postfix::port}":
       protocol => $postfix::protocol,
       port     => $postfix::port,
