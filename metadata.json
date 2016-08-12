@@ -1,6 +1,6 @@
 {
   "name": "example42-postfix",
-  "version": "2.0.21",
+  "version": "2.0.22",
   "summary": "Puppet module for postfix",
   "author": "Alessandro Franceschi",
   "description": "This module installs and manages postfix. Check README.rdoc for details. Puppi is required for some common functions: you can install them without using the whole module. Monitor and firewall dependencies are needed only if the relevant features are enabled",
