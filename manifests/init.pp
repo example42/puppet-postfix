@@ -273,7 +273,7 @@ class postfix (
   $bool_audit_only=any2bool($audit_only)
 
   ### Include custom class if $my_class is set
-  if $postfix::my_class {
+  if $postfix::my_class and $postfix::my_class != '' {
     include $postfix::my_class
   }
 
