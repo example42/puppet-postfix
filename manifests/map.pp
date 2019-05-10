@@ -25,6 +25,10 @@
 #   The file permissions of the file.
 #   Defaults to $postfix::config_file_mode
 #
+# [*type*]
+#   The type of the created map. Use to decide between reloading postfix
+#   or just make a postmap
+#
 # == Usage:
 # postfix::map { 'canonical':
 #   source => 'puppet:///modules/example42/postfix/canonical'
@@ -56,8 +60,10 @@ define postfix::map (
   $maps     = params_lookup( 'maps' ),
   $path     = "${postfix::config_dir}/${name}",
   $mode     = $postfix::config_file_mode,
+  $type     = 'hash',
 ) {
   include postfix
+  include postfix::reload
 
   $manage_file_source = $source ? {
     ''        => undef,
@@ -72,6 +78,13 @@ define postfix::map (
     default   => template($template),
   }
 
+  # CIDR and PCRE maps need a postfix reload, but not
+  # a postmap.
+  $manage_notify = empty(grep(['cidr', 'pcre'], $type)) ? {
+    true    => Exec["postmap-${name}"],
+    default => Class['::postfix::reload'],
+  }
+
   file { "postfix::map_${name}":
     ensure  => present,
     path    => $path,
@@ -83,12 +96,12 @@ define postfix::map (
     content => $manage_file_content,
     replace => $postfix::manage_file_replace,
     audit   => $postfix::manage_audit,
+    notify  => $manage_notify,
   }
 
   exec { "postmap-${name}":
     command     => "/usr/sbin/postmap ${path}",
     require     => Package['postfix'],
-    subscribe   => File["postfix::map_${name}"],
     refreshonly => true,
   }
 
